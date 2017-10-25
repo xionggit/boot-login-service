@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.user.mapper.AclUserMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.user.entity.AclUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="realName" jdbcType="VARCHAR" property="realname" />
+    <result column="peopleType" jdbcType="VARCHAR" property="peopletype" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+    <result column="lockTime" jdbcType="TIMESTAMP" property="locktime" />
+    <result column="islock" jdbcType="VARCHAR" property="islock" />
+    <result column="failCount" jdbcType="INTEGER" property="failcount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_name, mobile, email, user_pwd, role_ids, idcard, realName, peopleType, create_time, 
+    last_modify_time, lockTime, islock, failCount
+  </sql>
+  <select id="selectByExample" parameterType="com.ecochain.user.entity.AclUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tbl_sysmgr_acluser
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_sysmgr_acluser
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_sysmgr_acluser
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ecochain.user.entity.AclUserExample">
+    delete from tbl_sysmgr_acluser
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ecochain.user.entity.AclUser" useGeneratedKeys="true">
+    insert into tbl_sysmgr_acluser (user_name, mobile, email, 
+      user_pwd, role_ids, idcard, 
+      realName, peopleType, create_time, 
+      last_modify_time, lockTime, islock, 
+      failCount)
+    values (#{userName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{userPwd,jdbcType=VARCHAR}, #{roleIds,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{peopletype,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastModifyTime,jdbcType=TIMESTAMP}, #{locktime,jdbcType=TIMESTAMP}, #{islock,jdbcType=VARCHAR}, 
+      #{failcount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ecochain.user.entity.AclUser" useGeneratedKeys="true">
+    insert into tbl_sysmgr_acluser
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="roleIds != null">
+        role_ids,
+      </if>
+      <if test="idcard != null">
+        idcard,
+      </if>
+      <if test="realname != null">
+        realName,
+      </if>
+      <if test="peopletype != null">
+        peopleType,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time,
+      </if>
+      <if test="locktime != null">
+        lockTime,
+      </if>
+      <if test="islock != null">
+        islock,
+      </if>
+      <if test="failcount != null">
+        failCount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="roleIds != null">
+        #{roleIds,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="peopletype != null">
+        #{peopletype,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifyTime != null">
+        #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="locktime != null">
+        #{locktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="islock != null">
+        #{islock,jdbcType=VARCHAR},
+      </if>
+      <if test="failcount != null">
+        #{failcount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ecochain.user.entity.AclUserExample" resultType="java.lang.Long">
+    select count(*) from tbl_sysmgr_acluser
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tbl_sysmgr_acluser
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPwd != null">
+        user_pwd = #{record.userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleIds != null">
+        role_ids = #{record.roleIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null">
+        idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realname != null">
+        realName = #{record.realname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peopletype != null">
+        peopleType = #{record.peopletype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastModifyTime != null">
+        last_modify_time = #{record.lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.locktime != null">
+        lockTime = #{record.locktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.islock != null">
+        islock = #{record.islock,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failcount != null">
+        failCount = #{record.failcount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tbl_sysmgr_acluser
+    set id = #{record.id,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      user_pwd = #{record.userPwd,jdbcType=VARCHAR},
+      role_ids = #{record.roleIds,jdbcType=VARCHAR},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      realName = #{record.realname,jdbcType=VARCHAR},
+      peopleType = #{record.peopletype,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      last_modify_time = #{record.lastModifyTime,jdbcType=TIMESTAMP},
+      lockTime = #{record.locktime,jdbcType=TIMESTAMP},
+      islock = #{record.islock,jdbcType=VARCHAR},
+      failCount = #{record.failcount,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.user.entity.AclUser">
+    update tbl_sysmgr_acluser
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="roleIds != null">
+        role_ids = #{roleIds,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        realName = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="peopletype != null">
+        peopleType = #{peopletype,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="locktime != null">
+        lockTime = #{locktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="islock != null">
+        islock = #{islock,jdbcType=VARCHAR},
+      </if>
+      <if test="failcount != null">
+        failCount = #{failcount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.user.entity.AclUser">
+    update tbl_sysmgr_acluser
+    set user_name = #{userName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      role_ids = #{roleIds,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      realName = #{realname,jdbcType=VARCHAR},
+      peopleType = #{peopletype,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      lockTime = #{locktime,jdbcType=TIMESTAMP},
+      islock = #{islock,jdbcType=VARCHAR},
+      failCount = #{failcount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAllUserByResponserMobile" parameterType="string" resultMap="BaseResultMap">
+	SELECT * FROM tbl_sysmgr_acluser au
+	WHERE
+		au.role_ids IN (
+			SELECT
+				r.id
+			FROM
+				tbl_sysmgr_aclrole r
+			WHERE
+				r.response_user_Id IN (
+					SELECT
+						u.id
+					FROM
+						tbl_sysmgr_acluser u
+					WHERE
+						u.user_name = #{mobile}
+				)
+		)
+  </select>
+</mapper>

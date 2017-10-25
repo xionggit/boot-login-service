@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Spring Security Example </title>
+    <meta name="renderer" content="webkit"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <!-- <meta th:name="${_csrf.headerName}" th:content="${_csrf.token}"/> -->
+
+    <!-- name="_csrf" name="_csrf_header" 提供个ajax 获取使用  -->
+    <!-- 
+        var token = $("meta[name='_csrf']").attr("content");  
+        var header = $("meta[name='_csrf_header']").attr("content");  
+		$(document).ajaxSend(function(e, xhr, options) {  
+		    xhr.setRequestHeader(header, token);  
+		}); 
+     -->
+    <!-- <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+    <script
+	  src="http://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
+	  
+	<script type="text/javascript">
+	function changeCode(){
+		$.get("/getToken", function(result){
+		    $("input[name=token]").val(result);
+		});
+	}
+	
+	</script>
+
+</head>
+<body onload="changeCode()">
+<div th:if="${param.error}"
+     th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+    <span th:text="${errorMsg}">Wrong input!</span>
+</div>
+<div th:if="${param.login_error}"
+     th:with="errorMsg=${session.SPRING_SECURITY_LAST_EXCEPTION.message}">
+    <span th:text="${errorMsg}">Wrong input!</span>
+</div>
+<div th:if="${param.invalid}">
+    session 无效，被踢出
+</div>
+<div th:if="${param.expired}">
+    session 期满
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<div th:if="${#httpServletRequest.remoteUser != null}">
+    <p th:text="${#httpServletRequest.remoteUser}">
+        sample_user
+    </p>
+</div>
+<form action="/login" method="post">
+    <div><label> User Name : <input type="text" name="username" value="admin"/> </label></div>
+    <div><label> Password: <input type="password" name="password" value="123456"/> </label></div>
+    <div><label> token: <input type="text" name="token" onclick="changeCode()"/> <p name="textname"></p></label></div>
+    <input type="hidden" th:name="token" th:value="123"/>
+    <div><input type="submit" value="Sign In"/></div>
+    <input type="checkbox" name="remember-me" value="true" th:checked="checked"/>
+    <p>Remember me ${_csrf}</p>
+</form>
+</body>
+</html>

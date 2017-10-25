@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.user.mapper.AclRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.user.entity.AclRole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_name" property="role_name" jdbcType="VARCHAR" />
+    <result column="pronoun" property="pronoun" jdbcType="VARCHAR" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+    <result column="last_modify_time" property="last_modify_time" jdbcType="TIMESTAMP" />
+    <result column="user_number" property="user_number" jdbcType="INTEGER" />
+    <result column="department_flag" property="department_flag" jdbcType="VARCHAR" />
+    <result column="response_user_Id" property="response_user_Id" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="operateid" property="operateid" jdbcType="INTEGER" />
+    <result column="operatetime" property="operatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, role_name, pronoun, create_time, last_modify_time, user_number, department_flag, 
+    response_user_Id, status, operateid, operatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ecochain.user.entity.AclRoleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tbl_sysmgr_aclrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_sysmgr_aclrole
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_sysmgr_aclrole
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ecochain.user.entity.AclRoleExample" >
+    delete from tbl_sysmgr_aclrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.user.entity.AclRole" useGeneratedKeys="true" keyProperty="id" >
+    insert into tbl_sysmgr_aclrole (role_name, pronoun, create_time, 
+      last_modify_time, user_number, department_flag, 
+      response_user_Id, status, operateid, 
+      operatetime)
+    values (#{role_name,jdbcType=VARCHAR}, #{pronoun,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
+      #{last_modify_time,jdbcType=TIMESTAMP}, #{user_number,jdbcType=INTEGER}, #{department_flag,jdbcType=VARCHAR}, 
+      #{response_user_Id,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{operateid,jdbcType=INTEGER}, 
+      #{operatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.user.entity.AclRole" useGeneratedKeys="true" keyProperty="id" >
+    insert into tbl_sysmgr_aclrole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="role_name != null" >
+        role_name,
+      </if>
+      <if test="pronoun != null" >
+        pronoun,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+      <if test="last_modify_time != null" >
+        last_modify_time,
+      </if>
+      <if test="user_number != null" >
+        user_number,
+      </if>
+      <if test="department_flag != null" >
+        department_flag,
+      </if>
+      <if test="response_user_Id != null" >
+        response_user_Id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="operateid != null" >
+        operateid,
+      </if>
+      <if test="operatetime != null" >
+        operatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="role_name != null" >
+        #{role_name,jdbcType=VARCHAR},
+      </if>
+      <if test="pronoun != null" >
+        #{pronoun,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="last_modify_time != null" >
+        #{last_modify_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="user_number != null" >
+        #{user_number,jdbcType=INTEGER},
+      </if>
+      <if test="department_flag != null" >
+        #{department_flag,jdbcType=VARCHAR},
+      </if>
+      <if test="response_user_Id != null" >
+        #{response_user_Id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operateid != null" >
+        #{operateid,jdbcType=INTEGER},
+      </if>
+      <if test="operatetime != null" >
+        #{operatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ecochain.user.entity.AclRoleExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_sysmgr_aclrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbl_sysmgr_aclrole
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.role_name != null" >
+        role_name = #{record.role_name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pronoun != null" >
+        pronoun = #{record.pronoun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.create_time != null" >
+        create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.last_modify_time != null" >
+        last_modify_time = #{record.last_modify_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.user_number != null" >
+        user_number = #{record.user_number,jdbcType=INTEGER},
+      </if>
+      <if test="record.department_flag != null" >
+        department_flag = #{record.department_flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.response_user_Id != null" >
+        response_user_Id = #{record.response_user_Id,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.operateid != null" >
+        operateid = #{record.operateid,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatetime != null" >
+        operatetime = #{record.operatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbl_sysmgr_aclrole
+    set id = #{record.id,jdbcType=INTEGER},
+      role_name = #{record.role_name,jdbcType=VARCHAR},
+      pronoun = #{record.pronoun,jdbcType=VARCHAR},
+      create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      last_modify_time = #{record.last_modify_time,jdbcType=TIMESTAMP},
+      user_number = #{record.user_number,jdbcType=INTEGER},
+      department_flag = #{record.department_flag,jdbcType=VARCHAR},
+      response_user_Id = #{record.response_user_Id,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      operateid = #{record.operateid,jdbcType=INTEGER},
+      operatetime = #{record.operatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.user.entity.AclRole" >
+    update tbl_sysmgr_aclrole
+    <set >
+      <if test="role_name != null" >
+        role_name = #{role_name,jdbcType=VARCHAR},
+      </if>
+      <if test="pronoun != null" >
+        pronoun = #{pronoun,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="last_modify_time != null" >
+        last_modify_time = #{last_modify_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="user_number != null" >
+        user_number = #{user_number,jdbcType=INTEGER},
+      </if>
+      <if test="department_flag != null" >
+        department_flag = #{department_flag,jdbcType=VARCHAR},
+      </if>
+      <if test="response_user_Id != null" >
+        response_user_Id = #{response_user_Id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operateid != null" >
+        operateid = #{operateid,jdbcType=INTEGER},
+      </if>
+      <if test="operatetime != null" >
+        operatetime = #{operatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.user.entity.AclRole" >
+    update tbl_sysmgr_aclrole
+    set role_name = #{role_name,jdbcType=VARCHAR},
+      pronoun = #{pronoun,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      last_modify_time = #{last_modify_time,jdbcType=TIMESTAMP},
+      user_number = #{user_number,jdbcType=INTEGER},
+      department_flag = #{department_flag,jdbcType=VARCHAR},
+      response_user_Id = #{response_user_Id,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      operateid = #{operateid,jdbcType=INTEGER},
+      operatetime = #{operatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <select id="selectByPronoun" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_sysmgr_aclrole
+        where pronoun = #{pronoun,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getMaxPronoun" resultType="string">
+        select
+        max(pronoun) as maxPronoun
+        from tbl_sysmgr_aclrole
+    </select>
+
+	<select id="selectByEntity" parameterType="com.ecochain.user.entity.AclRole" resultMap="BaseResultMap">
+		select
+        <include refid="Base_Column_List"/>
+        from tbl_sysmgr_aclrole where 1 = 1 
+        <if test="role_name != null">
+        	and role_name = #{role_name} 
+        </if>
+        <if test="pronoun != null">
+            and pronoun = #{pronoun} 
+        </if>
+        <if test="create_time != null">
+            and create_time = #{create_time} 
+        </if>
+        <if test="last_modify_time != null">
+            and last_modify_time = #{last_modify_time} 
+        </if>
+        <if test="user_number != null">
+            and user_number = #{user_number} 
+        </if>
+        <if test="department_flag != null">
+            and department_flag = #{department_flag} 
+        </if>
+        <if test="response_user_Id != null">
+            and response_user_Id = #{response_user_Id} 
+        </if>
+	</select>
+</mapper>

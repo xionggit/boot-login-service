@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.user.mapper.AclResourcesMapper">
+    <resultMap id="BaseResultMap" type="com.ecochain.user.entity.AclResources">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pronoun" jdbcType="VARCHAR" property="pronoun"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="request_type_id" jdbcType="INTEGER" property="requestTypeId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, url, type, name, pronoun, parent_id, request_type_id, create_time, last_modify_time
+    </sql>
+    <select id="selectByExample" parameterType="com.ecochain.user.entity.AclResourcesExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from tbl_sysmgr_aclresources
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_sysmgr_aclresources
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_sysmgr_aclresources
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.ecochain.user.entity.AclResourcesExample">
+        delete from tbl_sysmgr_aclresources
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.ecochain.user.entity.AclResources">
+        insert into tbl_sysmgr_aclresources (id, url, type,
+        name, pronoun, parent_id,
+        request_type_id, create_time, last_modify_time
+        )
+        values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR}, #{pronoun,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
+        #{requestTypeId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ecochain.user.entity.AclResources">
+        insert into tbl_sysmgr_aclresources
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="pronoun != null">
+                pronoun,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="requestTypeId != null">
+                request_type_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastModifyTime != null">
+                last_modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pronoun != null">
+                #{pronoun,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="requestTypeId != null">
+                #{requestTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifyTime != null">
+                #{lastModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.ecochain.user.entity.AclResourcesExample" resultType="java.lang.Long">
+        select count(*) from tbl_sysmgr_aclresources
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update tbl_sysmgr_aclresources
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pronoun != null">
+                pronoun = #{record.pronoun,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.requestTypeId != null">
+                request_type_id = #{record.requestTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastModifyTime != null">
+                last_modify_time = #{record.lastModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update tbl_sysmgr_aclresources
+        set id = #{record.id,jdbcType=INTEGER},
+        url = #{record.url,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=VARCHAR},
+        name = #{record.name,jdbcType=VARCHAR},
+        pronoun = #{record.pronoun,jdbcType=VARCHAR},
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+        request_type_id = #{record.requestTypeId,jdbcType=INTEGER},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        last_modify_time = #{record.lastModifyTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.user.entity.AclResources">
+        update tbl_sysmgr_aclresources
+        <set>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pronoun != null">
+                pronoun = #{pronoun,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="requestTypeId != null">
+                request_type_id = #{requestTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifyTime != null">
+                last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ecochain.user.entity.AclResources">
+        update tbl_sysmgr_aclresources
+        set url = #{url,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        pronoun = #{pronoun,jdbcType=VARCHAR},
+        parent_id = #{parentId,jdbcType=INTEGER},
+        request_type_id = #{requestTypeId,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="AuthBaseResultMap" type="com.ecochain.user.entity.AclResources">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pronoun" jdbcType="VARCHAR" property="pronoun"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="request_type_id" jdbcType="INTEGER" property="requestTypeId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime"/>
+        <result column="authority" jdbcType="TIMESTAMP" property="authority"/>
+    </resultMap>
+
+    <select id="selectAclResourcesTypeOfRequest" resultMap="AuthBaseResultMap">
+        SELECT resources.*,CONCAT('auth_',CONCAT((SELECT pronoun FROM tbl_sysmgr_aclresources WHERE id =
+        resources.parent_id),'_'),requesttype.pronoun) AS authority FROM tbl_sysmgr_aclresources AS resources LEFT JOIN tbl_sysmgr_aclrequesttype AS
+        requesttype ON resources.request_type_id = requesttype.id WHERE resources.type = 'R'
+    </select>
+    <select id="selectAclResourcesByType" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM tbl_sysmgr_aclresources WHERE type=#{type}
+    </select>
+
+    <resultMap type="com.ecochain.user.entity.AclResources" id="AclResourcesResultMap">
+        <id column="id" property="id"/>
+        <result column="url" property="url"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="pronoun" property="pronoun"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="authority" property="authority"/>
+        <result column="request_type_id" property="requestTypeId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="last_modify_time" property="lastModifyTime"/>
+    </resultMap>
+
+
+    <select id="selectAclResourcesByResourceIds" resultMap="AclResourcesResultMap">
+        SELECT resources.*,CONCAT('auth_',CONCAT((SELECT pronoun FROM tbl_sysmgr_aclresources WHERE id =
+        resources.parent_id),'_'),requesttype.pronoun) AS authority FROM tbl_sysmgr_aclresources AS resources LEFT JOIN tbl_sysmgr_aclrequesttype AS
+        requesttype ON resources.request_type_id = requesttype.id WHERE resources.type = 'R' AND resources.id IN
+        <foreach collection="resourceIdsArray" index="index" item="resourceId" open="(" separator="," close=")">
+            #{resourceId}
+        </foreach>
+    </select>
+    
+    <resultMap id="AuthMap" type="com.ecochain.user.entity.Auth">
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="level1" jdbcType="VARCHAR" property="level1"/>
+        <result column="level2" jdbcType="VARCHAR" property="level2"/>
+    </resultMap>
+    
+    <select id="findResourcesByResourceIds" resultMap ="AuthMap" >
+        SELECT
+			t2.`name` AS level1,
+			t1.`name` AS level2,
+			t1.url,
+			tbl_sysmgr_aclrequesttype.pronoun as code
+			FROM
+			tbl_sysmgr_aclresources AS t
+			LEFT JOIN tbl_sysmgr_aclresources AS t1 ON t1.id = t.parent_id
+			LEFT JOIN tbl_sysmgr_aclresources AS t2 ON t2.id = t1.parent_id
+			LEFT JOIN tbl_sysmgr_aclrequesttype ON t.request_type_id = tbl_sysmgr_aclrequesttype.id
+		where t.id in 
+		<foreach collection="resourceIdsArray" index="index" item="resourceId" open="(" separator="," close=")">
+            #{resourceId}
+        </foreach>
+        ORDER BY t.sort
+    </select>
+</mapper>

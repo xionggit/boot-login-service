@@ -1,0 +1,47 @@
+<configuration>
+
+    <property name="LOG_FILE" value="../logs/mc-user.log"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>%-5level | %date | eco-user | %thread %logger{26}:%line | %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- 这一句至关重要如果没有，就无法输出sql语句 -->
+    <logger name="com.ecochain" level="DEBUG"></logger>
+    <!-- <logger name="org.springframework.data.redis" level="ERROR"></logger>
+    <logger name="org.springframework.session.data.redis" level="ERROR"></logger>
+    <logger name="org.springframework.session.web.http.SessionRepositoryFilter" level="ERROR"></logger>
+    <logger name="org.apache.zookeeper" level="ERROR"></logger> -->
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_FILE}</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %-5level | %date | eco-user | %thread %logger{26}:%line | %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 异步输出 -->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>512</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="FILE"/>
+    </appender>
+
+
+    <root level="info">
+        <appender-ref ref="ASYNC"/>
+        <appender-ref ref="STDOUT" />
+    </root>
+
+
+</configuration>

@@ -1,0 +1,37 @@
+server:
+    port: 8076
+    
+    
+spring:
+    session:
+      store-type: redis
+      
+    datasource:
+      readSize: 1
+        # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      write:
+        url: jdbc:mysql://127.0.0.1:3306/mc_user
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+        validationQuery: select 'x'
+
+      read:
+        url: jdbc:mysql://127.0.0.1:3306/mc_user
+        username: root
+        password: root
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        validationQuery: select 'x'
+
+    redis:
+        database: 0
+        host: 10.0.11.211
+        password: isanjie123
+        port: 6379
+
+#指定log的配置文件，以及记录Spring Boot的log级别  
+logging:
+    config: classpath:logback.xml     

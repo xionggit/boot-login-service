@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.user.mapper.AclRoleSourcesMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.user.entity.AclRoleSources">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_id" jdbcType="INTEGER" property="role_id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="last_modify_time" jdbcType="TIMESTAMP" property="last_modify_time" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ecochain.user.entity.AclRoleSources">
+    <result column="resource_ids" jdbcType="LONGVARCHAR" property="resource_ids" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, role_id, create_time, last_modify_time
+  </sql>
+  <sql id="Blob_Column_List">
+    resource_ids
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.ecochain.user.entity.AclRoleSourcesExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_sysmgr_aclroleresources
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.ecochain.user.entity.AclRoleSourcesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_sysmgr_aclroleresources
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_sysmgr_aclroleresources
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByForeignKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_sysmgr_aclroleresources
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_sysmgr_aclroleresources
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ecochain.user.entity.AclRoleSourcesExample">
+    delete from tbl_sysmgr_aclroleresources
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ecochain.user.entity.AclRoleSources" useGeneratedKeys="true">
+    insert into tbl_sysmgr_aclroleresources (role_id, create_time, last_modify_time, 
+      resource_ids)
+    values (#{role_id,jdbcType=INTEGER}, #{create_time,jdbcType=TIMESTAMP}, #{last_modify_time,jdbcType=TIMESTAMP}, 
+      #{resource_ids,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ecochain.user.entity.AclRoleSources" useGeneratedKeys="true">
+    insert into tbl_sysmgr_aclroleresources
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="role_id != null">
+        role_id,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="last_modify_time != null">
+        last_modify_time,
+      </if>
+      <if test="resource_ids != null">
+        resource_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="role_id != null">
+        #{role_id,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="last_modify_time != null">
+        #{last_modify_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resource_ids != null">
+        #{resource_ids,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ecochain.user.entity.AclRoleSourcesExample" resultType="java.lang.Long">
+    select count(*) from tbl_sysmgr_aclroleresources
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tbl_sysmgr_aclroleresources
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.role_id != null">
+        role_id = #{record.role_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.create_time != null">
+        create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.last_modify_time != null">
+        last_modify_time = #{record.last_modify_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.resource_ids != null">
+        resource_ids = #{record.resource_ids,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tbl_sysmgr_aclroleresources
+    set id = #{record.id,jdbcType=INTEGER},
+      role_id = #{record.role_id,jdbcType=INTEGER},
+      create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      last_modify_time = #{record.last_modify_time,jdbcType=TIMESTAMP},
+      resource_ids = #{record.resource_ids,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tbl_sysmgr_aclroleresources
+    set id = #{record.id,jdbcType=INTEGER},
+      role_id = #{record.role_id,jdbcType=INTEGER},
+      create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      last_modify_time = #{record.last_modify_time,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.user.entity.AclRoleSources">
+    update tbl_sysmgr_aclroleresources
+    <set>
+      <if test="role_id != null">
+        role_id = #{role_id,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="last_modify_time != null">
+        last_modify_time = #{last_modify_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resource_ids != null">
+        resource_ids = #{resource_ids,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ecochain.user.entity.AclRoleSources">
+    update tbl_sysmgr_aclroleresources
+    set role_id = #{role_id,jdbcType=INTEGER},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      last_modify_time = #{last_modify_time,jdbcType=TIMESTAMP},
+      resource_ids = #{resource_ids,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.user.entity.AclRoleSources">
+    update tbl_sysmgr_aclroleresources
+    set role_id = #{role_id,jdbcType=INTEGER},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      last_modify_time = #{last_modify_time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectResourceIdsByRoleIds" resultType="String">
+        SELECT GROUP_CONCAT(resource_ids) FROM tbl_sysmgr_aclroleresources WHERE role_id in
+        <foreach collection="resourceIdsArray" index="index" item="resource_ids" open="(" separator="," close=")">
+            #{resource_ids}
+        </foreach>
+    </select>
+
+    <update id="updateByRoleId" parameterType="com.ecochain.user.entity.AclRoleSources">
+        update tbl_sysmgr_aclroleresources
+        set resource_ids = #{resource_ids,jdbcType=LONGVARCHAR},
+        last_modify_time = #{last_modify_time,jdbcType=TIMESTAMP}
+        where role_id = #{role_id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from tbl_sysmgr_aclroleresources
+        where role_id = #{role_id,jdbcType=INTEGER}
+    </delete>
+</mapper>
