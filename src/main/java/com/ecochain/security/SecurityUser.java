@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.ecochain.user.entity.UserConstatnt;
+
 /**
  * 对象
  *
@@ -24,12 +26,14 @@ public class SecurityUser implements UserDetails {
     private String mobile;//手机号
     private String username;//用户名
     private String password;//密码
-    private boolean enabled;
+    private boolean enabled;//是否启用 ，默认true
+    private String locked;//是否锁定
     
     private Collection<? extends GrantedAuthority> authorities;
 
     public SecurityUser(Integer id, String username, String password, boolean enabled,
-                        String roleIds, String idcard, String mobile, String peopletype, String realname) {
+                        String roleIds, String idcard, String mobile, String peopletype,
+                        String realname, String locked) {
         super();
         this.id = id;
         this.username = username;
@@ -40,11 +44,13 @@ public class SecurityUser implements UserDetails {
         this.realname = realname;
         this.peopletype = peopletype;
         this.mobile = mobile;
+        this.locked = locked;
     }
 
     public SecurityUser(Integer id, String username, String password, boolean enabled,
                         Collection<? extends GrantedAuthority> authorities,
-                        String roleIds, String idcard, String mobile, String peopletype, String realname) {
+                        String roleIds, String idcard, String mobile, String peopletype,
+                        String realname, String locked) {
         super();
         this.id = id;
         this.username = username;
@@ -56,6 +62,7 @@ public class SecurityUser implements UserDetails {
         this.realname = realname;
         this.peopletype = peopletype;
         this.mobile = mobile;
+        this.locked = locked;
     }
 
     public Integer getId() {
@@ -84,7 +91,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return UserConstatnt.ACLUSER_ISLOCK_NO.equals(this.locked);
     }
 
     @Override

@@ -3,6 +3,9 @@ server:
     
     
 spring:
+    # 如果是测试环境则dev_model=true 不做验证码校验
+    dev_model: false
+    
     session:
       store-type: redis
       

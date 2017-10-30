@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.SecurityMetadataSource;
@@ -19,7 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 
-import com.ecochain.service.AclUserService;
+import com.ecochain.service.AclResourcesService;
 
 /** 
  * 该过滤器的主要作用就是通过spring著名的IoC生成securityMetadataSource。 
@@ -28,15 +30,23 @@ import com.ecochain.service.AclUserService;
  * 供Spring Security使用，用于权限校验。 
  */  
 @Component  
-public class MySecurityFilter extends AbstractSecurityInterceptor implements Filter{  
-//    @Autowired  
-//    private CustomInvocationSecurityMetadataSourceService  mySecurityMetadataSource;  
+public class CustomSecurityFilter extends AbstractSecurityInterceptor implements Filter{
+    
+    Logger log = LoggerFactory.getLogger(getClass());
       
     @Autowired  
     private CustomAccessDecisionManager myAccessDecisionManager;  
       
     @Autowired  
     private AuthenticationManager authenticationManager;  
+    
+    @Autowired
+    AclResourcesService aclResourcesService;
+
+    @Bean
+    CustomInvocationSecurityMetadataSourceService customInvocationSecurityMetadataSourceService(){
+        return new CustomInvocationSecurityMetadataSourceService(aclResourcesService);
+    }
     
     @PostConstruct  
     public void init(){  
@@ -52,14 +62,12 @@ public class MySecurityFilter extends AbstractSecurityInterceptor implements Fil
           
     }  
   
-      
     public Class<? extends Object> getSecureObjectClass(){  
         return FilterInvocation.class;  
     }  
-  
       
     public void invoke( FilterInvocation fi ) throws IOException, ServletException{  
-        System.out.println("filter....invoke................" + fi.getRequestUrl());  
+        log.info("RequestUrl： {}" , fi.getRequestUrl());  
         InterceptorStatusToken  token = super.beforeInvocation(fi);  
         try{  
             fi.getChain().doFilter(fi.getRequest(), fi.getResponse());  
@@ -68,26 +76,17 @@ public class MySecurityFilter extends AbstractSecurityInterceptor implements Fil
         }  
           
     }  
-          
       
     @Override  
     public SecurityMetadataSource obtainSecurityMetadataSource(){  
         System.out.println("obtainSecurityMetadataSource===");  
         return this.customInvocationSecurityMetadataSourceService();  
     }  
-    
-    @Autowired
-    AclUserService userClient;
-    
-    @Bean
-    CustomInvocationSecurityMetadataSourceService customInvocationSecurityMetadataSourceService(){
-        return new CustomInvocationSecurityMetadataSourceService(userClient);
-    }
       
     public void destroy(){  
-        System.out.println("filter===========================end");  
+        log.debug("filter===========================end");  
     }  
     public void init( FilterConfig filterconfig ) throws ServletException{  
-        System.out.println("filter===========================");  
+        log.debug("filter===========================");  
     }  
 }  

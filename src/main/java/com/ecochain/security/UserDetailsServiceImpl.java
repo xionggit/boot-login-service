@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,13 +37,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         
-       /**
-         * 修改调用 mc-user里面的接口queryByName
-         */
         log.info("userNmae :"+ username);
         List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
         /**
-         * 修改调用mc-user/selectResourceIdsByRoleIds
+         * 通过数据库查询用户信息
          */
         AclUser user = userClient.findAclUserByName(username);
         
@@ -62,21 +58,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
             
             
-//            if (resourceResultDto != null){
-//                
-//                List<AclResources> aclResourcesList = resourceResultDto;
-//                for (AclResources aclResources : aclResourcesList) {
-//                    auths.add(new SimpleGrantedAuthority(aclResources.getAuthority().toString().toUpperCase()));
-//                }
-//            }
+            if (resourceResultDto != null){
+                
+                List<AclResources> aclResourcesList = resourceResultDto;
+                for (AclResources aclResources : aclResourcesList) {
+                    auths.add(new SimpleGrantedAuthority(aclResources.getAuthority().toString().toUpperCase()));
+                }
+            }
             SecurityUser securityUser = new SecurityUser(user.getId(), user.getUserName(), user.getUserPwd(),
                     true, auths, user.getRoleIds(), user.getIdcard(),
-                    user.getMobile(), user.getPeopletype(), user.getRealname());
-//            return new User(user.getUserName().toLowerCase(),
-//                    user.getUserPwd().toLowerCase(),true,true,true,true,auths);
+                    user.getMobile(), user.getPeopletype(), user.getRealname(),user.getIslock());
 
             return securityUser;
         }else{
+            /*
+             * TODO 根据安全级别定义是丢出 UsernameNotFoundException 还是BadCredentialsException
+             * 
+             * 不建议抛出UsernameNotFoundException是因为没有做IP限制登录，会导致用户名被遍历，
+             * 使竞争对手可以获取平台用户信息
+             */
             throw new UsernameNotFoundException(username + " not found");
         }
         

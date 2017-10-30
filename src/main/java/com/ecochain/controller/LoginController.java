@@ -4,21 +4,24 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@SuppressWarnings("rawtypes")
+import com.ecochain.config.CoreMessageSource;
+import com.ecochain.util.ValidationCodeUtil;
+import com.ecochain.util.ValidationCodeWrap;
+
 @RestController
 public class LoginController{
+    
+    @Autowired
+    private CoreMessageSource messageSource;
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() throws SQLException{
@@ -30,7 +33,8 @@ public class LoginController{
     @RequestMapping(value = "/getToken", method = RequestMethod.GET)
     public String getToken(HttpServletRequest request) throws SQLException{
         String token = UUID.randomUUID().toString();
-        request.getSession().setAttribute("token", token);
+        ValidationCodeWrap codeWrap = ValidationCodeUtil.getSesionCode(token, 3);
+        request.getSession().setAttribute("token", codeWrap);
         return token;
         
     }
@@ -67,6 +71,11 @@ public class LoginController{
     public String loginexpired() throws SQLException{
         
         return "被踢出了";
+    }
+    
+    @GetMapping("/changeLang")
+    public String changeLang(@RequestParam(required = false) String lang){
+        return messageSource.getMessage("saveSuccess");
     }
 
 }

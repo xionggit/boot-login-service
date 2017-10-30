@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -325,4 +326,16 @@ public class AclUserServiceImpl implements AclUserService {
 			throw new RuntimeServiceException("删除用户失败");
 		}
 	}
+
+    @Override
+    public void updateUserByUserName(AclUser aclUser) {
+        
+        Assert.assertNotNull("AclUser must not be null", aclUser);
+        Assert.assertNotNull("AclUser.userName must not be null", aclUser.getUserName());
+        
+        AclUserExample example =  new AclUserExample();
+        example.createCriteria().andUserNameEqualTo(aclUser.getUserName());
+        
+        userMapper.updateByExample(aclUser, example);
+    }
 }

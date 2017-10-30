@@ -2,6 +2,12 @@ package com.ecochain.user.entity;
 
 import java.io.Serializable;
 
+/** 
+ * @Description: 类说明: user相关常量类，可以将该设置放置的数据进行动态配置。或者使用springconfig动态配置
+ * @author: xiong  
+ * @GitConfig name: xionggit  email: shao200815@163.com
+ * @date: 2017-10-30 16:47:46 
+ */
 public class UserConstatnt implements Serializable {
     /**
      *

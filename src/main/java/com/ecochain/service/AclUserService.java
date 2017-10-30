@@ -102,6 +102,13 @@ public interface AclUserService {
      */
     public void updateUserEntity(AclUser aclUser);
     
+    /**  
+     * 通过username更新AclUser里不为null的字段
+     * @Title updateUserByUserName  
+     * @param aclUser void   
+     */  
+    public void updateUserByUserName(AclUser aclUser);
+    
     /**
      * 根据手机号列表查询满足条件的用户信息
      * @param mobiles 手机号列表

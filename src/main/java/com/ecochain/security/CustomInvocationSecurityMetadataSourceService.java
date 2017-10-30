@@ -19,7 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 
-import com.ecochain.service.AclUserService;
+import com.ecochain.service.AclResourcesService;
+import com.ecochain.user.entity.AclResources;
 
 @Component
 public class CustomInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
@@ -27,19 +28,19 @@ public class CustomInvocationSecurityMetadataSourceService implements FilterInvo
 
     private static Map<String, Collection<ConfigAttribute>> aclResourceMap = null;
     
-    private AclUserService userClient;
+    private AclResourcesService aclResourcesService;
 
     /**
      * 构造方法
      */
-    public CustomInvocationSecurityMetadataSourceService(AclUserService userClient) {
-        this.userClient = userClient;
+    public CustomInvocationSecurityMetadataSourceService(AclResourcesService userClient) {
+        this.aclResourcesService = userClient;
         loadResourceDefine();
     }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        System.out.println("=====getAttributes======");
+        LOG.debug("=====getAttributes======");
         
         HttpServletRequest request = ((FilterInvocation) object).getRequest();
         Iterator<String> ite = aclResourceMap.keySet().iterator();
@@ -70,18 +71,20 @@ public class CustomInvocationSecurityMetadataSourceService implements FilterInvo
 
     private void loadResourceDefine() {
         
-        System.out.println("=====loadResourceDefine======");
+        LOG.debug("=====loadResourceDefine======");
         
         /**
          * 因为只有权限控制的资源才需要被拦截验证,所以只加载有权限控制的资源
+         * 从数据库读取需要权限的url
          */
-        //TODO 因为前端无法传递token过来，暂时不错权限细化认证
-//        List<Map<String, Object>> aclResourceses = userClient.selectAclResourcesTypeOfRequest();
-        List<Map<String, Object>> aclResourceses = new ArrayList<Map<String,Object>>();
+        List<AclResources> aclResourceses = aclResourcesService.selectAclResourcesTypeOfRequest();
+        //如果不想从数据库配置，这里直接设置为new ArrayList<Map<String,Object>>();即可。
+        //然后从代码里配置@PreAuthorize("")
+//        List<Map<String, Object>> aclResourceses = new ArrayList<Map<String,Object>>();
         aclResourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-        for (Map<String, Object> aclResources : aclResourceses) {
-            ConfigAttribute ca = new SecurityConfig(aclResources.get("authority").toString().toUpperCase());
-            String url = aclResources.get("url").toString();
+        for (AclResources aclResources : aclResourceses) {
+            ConfigAttribute ca = new SecurityConfig(aclResources.getAuthority().toUpperCase());
+            String url = aclResources.getUrl().toString();
             if (aclResourceMap.containsKey(url)) {
                 Collection<ConfigAttribute> value = aclResourceMap.get(url);
                 value.add(ca);

@@ -42,13 +42,13 @@
     <span th:text="${errorMsg}">Wrong input!</span>
 </div>
 <div th:if="${param.invalid}">
-    session 无效，被踢出
+    session 超时无效
 </div>
 <div th:if="${param.expired}">
-    session 期满
+    session 被踢出
 </div>
 <div th:if="${param.logout}">
-    You have been logged out.
+    正常退出
 </div>
 <div th:if="${#httpServletRequest.remoteUser != null}">
     <p th:text="${#httpServletRequest.remoteUser}">
