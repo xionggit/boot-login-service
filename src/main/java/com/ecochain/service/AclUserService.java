@@ -83,6 +83,13 @@ public interface AclUserService {
      * @throws RuntimeServiceException
      */
     public  void  unLockUserByMobile(String mobile) throws RuntimeServiceException;
+    
+    /**  
+     * 获取被锁定时间超过30分钟，需要解锁的用户，
+     * @Title getNeedLockedUser  
+     * @return List<AclUser>   
+     */  
+    public List<AclUser> getNeedLockedUser();
     /**
      * 修改用户信息
      * @param mobile

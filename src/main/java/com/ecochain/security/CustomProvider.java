@@ -54,6 +54,7 @@ public class CustomProvider extends DaoAuthenticationProvider{
             /*
              * 1、读取用户信息
              * 2、判断是否锁定、是否过期、用户是否可用
+             *    2.1 判断是否锁定是在SecurityUser的isAccountNonLocked方法重写的
              * 3、判断用户名、密码是否正确
              */
             return  super.authenticate(authentication);
@@ -63,7 +64,8 @@ public class CustomProvider extends DaoAuthenticationProvider{
             
             AclUser aclUser = userClient.findAclUserByName(authentication.getName());
             if (null!=aclUser) {
-                //超过5次，锁定用户30分钟
+                //超过5次，锁定用户30分钟，被锁定的用户通过跑定时任务解锁
+                //根据需求改动，例如每天0点解锁
                 if (aclUser.getFailcount() >= UserConstatnt.LOGIN_FAIL_COUNT) {
                     aclUser.setLocktime(new Date());
                     aclUser.setIslock(UserConstatnt.ACLUSER_ISLOCK_YES);
@@ -96,11 +98,15 @@ public class CustomProvider extends DaoAuthenticationProvider{
             ex.printStackTrace();
             AclUser aclUser = userClient.findAclUserByName(authentication.getName());
             
+            // diff 为负数，因为当前时间大于锁定时间
             int diff = DateUtil.getIntervalMinute(new Date(), aclUser.getLocktime());
+            int minute = UserConstatnt.LOGIN_LOCK_TIME + diff;
+            //通过锁定逻辑判断，尽量不要使minute 出现负数情况，减少判断
+//            minute = minute > 0 ? minute : 0;
             
             exception = new LockedException(
                     messages.getMessage("Rock.locked", 
-                            new Object[]{UserConstatnt.LOGIN_LOCK_TIME + diff}));
+                            new Object[]{minute}));
         } 
         
         throw exception;

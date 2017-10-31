@@ -9,9 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.ecochain.user.entity.UserConstatnt;
 
 /**
- * 对象
- *
- * @author Liuhaihua
+ * UserDetails对象
+ * @Description: 类说明: TODO 不用的属性可以删除
+ * @author: xiong  
+ * @GitConfig name: xionggit  email: shao200815@163.com
+ * @date: 2017-10-31 17:27:29 
  */
 public class SecurityUser implements UserDetails {
     /**
@@ -26,10 +28,22 @@ public class SecurityUser implements UserDetails {
     private String mobile;//手机号
     private String username;//用户名
     private String password;//密码
-    private boolean enabled;//是否启用 ，默认true
+    private boolean enabled = true;//是否启用 ，默认true
     private String locked;//是否锁定
     
     private Collection<? extends GrantedAuthority> authorities;
+    
+    public SecurityUser(Integer id,String username, String password,
+            String locked, Collection<? extends GrantedAuthority> authorities) {
+        super();
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
+        this.locked = locked;
+        this.authorities = authorities;
+    }
+    
 
     public SecurityUser(Integer id, String username, String password, boolean enabled,
                         String roleIds, String idcard, String mobile, String peopletype,

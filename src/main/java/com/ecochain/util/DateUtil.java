@@ -319,7 +319,7 @@ public class DateUtil {
     }
 
     /**
-     * date1>date2 返回1，否则返回-1
+     * date1>date2 返回1，否则返回-1，<p>相等返回0
      * @param date1
      * @param date2
      * @return

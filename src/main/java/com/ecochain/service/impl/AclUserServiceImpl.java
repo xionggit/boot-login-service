@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ecochain.config.RuntimeServiceException;
 import com.ecochain.service.AclUserService;
@@ -21,6 +22,7 @@ import com.ecochain.user.entity.UserConstatnt;
 import com.ecochain.user.entity.AclUserExample.Criteria;
 import com.ecochain.user.mapper.AclLogMapper;
 import com.ecochain.user.mapper.AclUserMapper;
+import com.ecochain.util.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -233,6 +235,7 @@ public class AclUserServiceImpl implements AclUserService {
 	}
 
 	@Override
+	@Transactional
 	public void unLockUserByMobile(String mobile) throws RuntimeServiceException {
 		AclUserExample example = new AclUserExample();
 		example.createCriteria().andMobileEqualTo(mobile);
@@ -240,6 +243,7 @@ public class AclUserServiceImpl implements AclUserService {
 		if(null!=list&&list.size()>0){
 			AclUser aclUser = list.get(0);
 			aclUser.setIslock(UserConstatnt.ACLUSER_ISLOCK_NO);
+			aclUser.setFailcount(0);
 			userMapper.updateByPrimaryKeySelective(aclUser);
 		}else{
 			throw new RuntimeServiceException("该用户不存在");
@@ -337,5 +341,17 @@ public class AclUserServiceImpl implements AclUserService {
         example.createCriteria().andUserNameEqualTo(aclUser.getUserName());
         
         userMapper.updateByExample(aclUser, example);
+    }
+
+    @Override
+    public List<AclUser> getNeedLockedUser() {
+        //当前时间减去30分钟
+        Date unLockDate = DateUtil.addDay(new Date(), -UserConstatnt.LOGIN_LOCK_TIME);
+        
+        AclUserExample example =  new AclUserExample();
+        example.createCriteria().andIslockEqualTo(UserConstatnt.ACLUSER_ISLOCK_YES)
+            .andLocktimeLessThanOrEqualTo(unLockDate);
+        
+        return userMapper.selectByExample(example);
     }
 }

@@ -46,7 +46,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         
         if ( user != null ){
             
-            
             List<AclResources> resourceResultDto = null;
             String resourceIds = aclRoleResourcesService.selectResourceIdsByRoleIds(user.getRoleIds());
             
@@ -57,7 +56,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 resourceResultDto = null;
             }
             
-            
             if (resourceResultDto != null){
                 
                 List<AclResources> aclResourcesList = resourceResultDto;
@@ -66,8 +64,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 }
             }
             SecurityUser securityUser = new SecurityUser(user.getId(), user.getUserName(), user.getUserPwd(),
-                    true, auths, user.getRoleIds(), user.getIdcard(),
-                    user.getMobile(), user.getPeopletype(), user.getRealname(),user.getIslock());
+                    user.getIslock(), auths);
 
             return securityUser;
         }else{
