@@ -14,6 +14,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.ecochain.service.AclUserService;
 import com.ecochain.user.entity.AclUser;
@@ -43,7 +44,9 @@ public class CustomProvider extends DaoAuthenticationProvider{
     
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        RuntimeException exception = null;
+        RuntimeException exception = new BadCredentialsException(messages.getMessage(
+                "AbstractUserDetailsAuthenticationProvider.badCredentials",
+                "Bad credentials"));
         // 下面是验证逻辑，验证通过则返回UsernamePasswordAuthenticationToken，
         // 否则，可直接抛出错误（AuthenticationException的子类，在登录验证不通过重定向
         // 至登录页时可通过session.SPRING_SECURITY_LAST_EXCEPTION.message获取具体错误提示信息）
@@ -54,22 +57,12 @@ public class CustomProvider extends DaoAuthenticationProvider{
              * 3、判断用户名、密码是否正确
              */
             return  super.authenticate(authentication);
-        } catch (LockedException ex) {
-            logger.debug("-----锁定用户----" + ex.getMessage());
-            ex.printStackTrace();
-            AclUser aclUser = userClient.findAclUserByName(authentication.getName());
-            
-            int diff = DateUtil.getIntervalMinute(new Date(), aclUser.getLocktime());
-            
-            exception = new LockedException(
-                    messages.getMessage("Rock.locked", 
-                            new Object[]{UserConstatnt.LOGIN_LOCK_TIME + diff}));
         } catch (BadCredentialsException e) {
             logger.debug("-----userName-----" + authentication.getName());
             // 锁定用户、密码检查等自定义设置
             
             AclUser aclUser = userClient.findAclUserByName(authentication.getName());
-             if (null!=aclUser) {
+            if (null!=aclUser) {
                 //超过5次，锁定用户30分钟
                 if (aclUser.getFailcount() >= UserConstatnt.LOGIN_FAIL_COUNT) {
                     aclUser.setLocktime(new Date());
@@ -93,6 +86,21 @@ public class CustomProvider extends DaoAuthenticationProvider{
                 }
                 userClient.updateUserEntity(aclUser);
             }
+        } catch (UsernameNotFoundException ex) {
+            logger.debug("-----用户不存在用户----" + ex.getMessage());
+            ex.printStackTrace();
+            
+            exception = ex;
+        } catch (LockedException ex) {
+            logger.debug("-----锁定用户----" + ex.getMessage());
+            ex.printStackTrace();
+            AclUser aclUser = userClient.findAclUserByName(authentication.getName());
+            
+            int diff = DateUtil.getIntervalMinute(new Date(), aclUser.getLocktime());
+            
+            exception = new LockedException(
+                    messages.getMessage("Rock.locked", 
+                            new Object[]{UserConstatnt.LOGIN_LOCK_TIME + diff}));
         } 
         
         throw exception;

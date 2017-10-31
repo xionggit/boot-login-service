@@ -73,9 +73,19 @@ public class LoginController{
         return "被踢出了";
     }
     
+    /**  
+     * 切换国际化语言<p>
+     * lang=zh_CN 为中文<br>
+     * lang=en_US 为英文
+     * <p>
+     * zh_CN和en_US 为国际化配置文件后缀
+     * @Title changeLang  
+     * @param lang
+     * @return String   
+     */  
     @GetMapping("/changeLang")
     public String changeLang(@RequestParam(required = false) String lang){
-        return messageSource.getMessage("saveSuccess");
+        return messageSource.getMessage("test.addSuccess");
     }
 
 }

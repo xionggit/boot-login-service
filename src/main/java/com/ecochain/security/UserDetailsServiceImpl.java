@@ -72,7 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return securityUser;
         }else{
             /*
-             * TODO 根据安全级别定义是丢出 UsernameNotFoundException 还是BadCredentialsException
+             * 根据安全级别定义，默认会将 UsernameNotFoundException转成BadCredentialsException
              * 
              * 不建议抛出UsernameNotFoundException是因为没有做IP限制登录，会导致用户名被遍历，
              * 使竞争对手可以获取平台用户信息

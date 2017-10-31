@@ -83,8 +83,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //问号需要转译，不使用antMatcers，是因为不知道ant里?怎么转译
                 .regexMatchers("/login\\?invalid", "/login\\?expired",
                         "/index", "/home", "/getToken", "/accessDenied"
-                        , "/changeLang")
-                .permitAll()//访问：/home 无需登录认证权限  
+                        , "/changeLang.*")//".*"表示任意字符
+                .permitAll()//访问以上无需登录认证权限  
                 .anyRequest()
                 .authenticated() //其他所有资源都需要认证，登陆后访问  
             .and()
@@ -142,18 +142,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          */
 //        ReflectionSaltSource saltSource = new ReflectionSaltSource();
 //        saltSource.setUserPropertyToUse("username");
+//        provider.setSaltSource(saltSource);
         /*
          * 如果使用BCryptPasswordEncoder 加密方式，则不需要设置salt，BCryptPasswordEncoder 为官方推荐使用加密方式
          * 因为BCryptPasswordEncoder内置随机生成salt，即使同一个密码，每次生成也不同，请查看PassWordTest
          * 
          * 如果不使用BCryptPasswordEncoder，则请设置salt增加安全性
-         * provider.setSaltSource(saltSource);
          */
         
         //TODO 设置密码加密方式
         provider.setPasswordEncoder(passwordEncoder());
         
         provider.setMessageSource(messageSource);
+        //TODO 如果想抛出UserNotFoundExceptions则设置为false即可，setHideUserNotFoundExceptions默认为true
+//        provider.setHideUserNotFoundExceptions(true);
         return provider;
     }
     
