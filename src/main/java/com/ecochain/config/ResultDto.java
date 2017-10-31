@@ -1,11 +1,8 @@
 package com.ecochain.config;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
