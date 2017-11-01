@@ -346,7 +346,7 @@ public class AclUserServiceImpl implements AclUserService {
     @Override
     public List<AclUser> getNeedLockedUser() {
         //当前时间减去30分钟
-        Date unLockDate = DateUtil.addDay(new Date(), -UserConstatnt.LOGIN_LOCK_TIME);
+        Date unLockDate = DateUtil.addMiunte(new Date(), -UserConstatnt.LOGIN_LOCK_TIME);
         
         AclUserExample example =  new AclUserExample();
         example.createCriteria().andIslockEqualTo(UserConstatnt.ACLUSER_ISLOCK_YES)

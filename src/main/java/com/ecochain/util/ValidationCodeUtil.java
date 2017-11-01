@@ -68,7 +68,7 @@ public class ValidationCodeUtil {
         StringBuilder randomCode = new StringBuilder();
 
         // 设置备选验证码:包括"a-z"和数字"0-9"
-        String base = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
 
         // 随机产生4位验证码
         for (int i = 0; i < 4; i++) {
@@ -134,12 +134,27 @@ public class ValidationCodeUtil {
         return vcw;
 
     }
+    /**  
+     * 创建验证码用于session验证，随机4位验证码，默认3分钟
+     * @return ValidationCodeWrap   
+     */ 
+    public static ValidationCodeWrap getSesionCode() {
+        return getSesionCode(null, 3);
+    }
     
+    /**  
+     * 创建验证码用于session验证，随机4位验证码
+     * @param interval 为null 则有效时间，默认3分钟
+     * @return ValidationCodeWrap   
+     */ 
+    public static ValidationCodeWrap getSesionCode(int interval) {
+        return getSesionCode(null, interval);
+    }
     
     /**  
     * 创建验证码用于session验证，
     * @Title getSesionCode  
-    * @param randomCode 验证，非必填，不填则随机6位数字验证码
+    * @param randomCode 验证，非必填，不填则随机4位验证码
     * @param interval 有效时间，默认3分钟
     * @return ValidationCodeWrap   
     */  

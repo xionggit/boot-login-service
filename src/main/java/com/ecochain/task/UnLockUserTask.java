@@ -12,10 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import com.ecochain.service.AclUserService;
 import com.ecochain.user.entity.AclUser;
 
+@Component
 public class UnLockUserTask {
 
     private static Logger log = LoggerFactory.getLogger(UnLockUserTask.class);

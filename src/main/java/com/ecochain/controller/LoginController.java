@@ -1,7 +1,6 @@
 package com.ecochain.controller;
 
 import java.sql.SQLException;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,10 +31,10 @@ public class LoginController{
     
     @RequestMapping(value = "/getToken", method = RequestMethod.GET)
     public String getToken(HttpServletRequest request) throws SQLException{
-        String token = UUID.randomUUID().toString();
-        ValidationCodeWrap codeWrap = ValidationCodeUtil.getSesionCode(token, 3);
-        request.getSession().setAttribute("token", codeWrap);
-        return token;
+        //TODO 将ValidationCodeWrap.image 已流的形式直接输出给前台
+        ValidationCodeWrap codeWrap = ValidationCodeUtil.getSesionCode();
+        request.getSession().setAttribute("_validationCode", codeWrap.getVc());
+        return codeWrap.getVc().getCode();
         
     }
     

@@ -66,6 +66,8 @@ public class CustomProvider extends DaoAuthenticationProvider{
             if (null!=aclUser) {
                 //超过5次，锁定用户30分钟，被锁定的用户通过跑定时任务解锁
                 //根据需求改动，例如每天0点解锁
+                //设置错误次数
+                aclUser.setFailcount(aclUser.getFailcount()+1);
                 if (aclUser.getFailcount() >= UserConstatnt.LOGIN_FAIL_COUNT) {
                     aclUser.setLocktime(new Date());
                     aclUser.setIslock(UserConstatnt.ACLUSER_ISLOCK_YES);
@@ -73,8 +75,7 @@ public class CustomProvider extends DaoAuthenticationProvider{
                             messages.getMessage("Rock.locked", 
                                     new Object[]{UserConstatnt.LOGIN_LOCK_TIME}));
                 } else {
-                    aclUser.setFailcount(aclUser.getFailcount()+1);
-                    //设置错误次数
+                    
                     ((CustomUsernamePasswordAuthenticationToken) authentication).getHttpServletRequest()
                         .getSession().setAttribute("errorCount", aclUser.getFailcount());
                     
@@ -82,10 +83,7 @@ public class CustomProvider extends DaoAuthenticationProvider{
                             + messages.getMessage("TimesLeft", 
                                     new Object[]{UserConstatnt.LOGIN_FAIL_COUNT - aclUser.getFailcount()}));
                 }
-                if(aclUser.getFailcount()==5){
-                    aclUser.setLocktime(new Date());
-                    aclUser.setIslock(UserConstatnt.ACLUSER_ISLOCK_YES);
-                }
+                
                 userClient.updateUserEntity(aclUser);
             }
         } catch (UsernameNotFoundException ex) {
