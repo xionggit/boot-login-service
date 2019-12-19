@@ -15,8 +15,11 @@ public class BootApplication {
     public static void main(String[] args) {
         SpringApplication.run(BootApplication.class, args);
         //Test node vimdiff-1
+		93b77bcc1f3b
+
+#         93b77bcc1f3b Merge branch 'test' of https://github.com/xionggit/boot-login-service into 
+#         d7eb7087fca6 Merge branch 'test' of https://github.com/xionggit/boot-login-service into test                                                                                                                                       
+#         386b250d4fe2 test nodepad□~Z~D  
     }
 }
-93b77bcc1f3b
-
-#         93b77bcc1f3b Merge branch 'test' of https://github.com/xionggit/boot-login-service into test                                                                                                                                       #         d7eb7087fca6 Merge branch 'test' of https://github.com/xionggit/boot-login-service into test                                                                                                                                       #         386b250d4fe2 test nodepad□~Z~D   
+ 
